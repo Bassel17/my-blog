@@ -28,12 +28,38 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       </main>
       <footer className="py-8">
         <div className="max-w-5xl px-8 mx-auto">
-          Built by{' '}
           <a
             className="text-gray-900 dark:text-white"
-            href="https://twitter.com/huntarosan"
+            href="https://www.linkedin.com/in/bassel-kanso-937649128/"
+            target="_blank"
+            rel="noreferrer"
           >
-            Hunter Chang
+            <i
+              className="devicon-linkedin-plain"
+              style={{ fontSize: '40px', padding: '1rem' }}
+            />
+          </a>
+          <a
+            className="text-gray-900 dark:text-white"
+            href="https://twitter.com/BasselKanso1"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <i
+              className="devicon-twitter-original"
+              style={{ fontSize: '40px', padding: '1rem' }}
+            />
+          </a>
+          <a
+            className="text-gray-900 dark:text-white"
+            href="https://github.com/bassel17"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <i
+              className="devicon-github-original"
+              style={{ fontSize: '40px', padding: '1rem' }}
+            />
           </a>
         </div>
       </footer>

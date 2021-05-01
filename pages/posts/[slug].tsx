@@ -53,6 +53,9 @@ const PostPage = ({ source, frontMatter }: PostPageProps): JSX.Element => {
         </p>
         <div className="prose dark:prose-dark">{content}</div>
       </article>
+      <br />
+      <br />
+      <hr />
     </Layout>
   );
 };

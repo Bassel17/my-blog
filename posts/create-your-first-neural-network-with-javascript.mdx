@@ -1,0 +1,94 @@
+---
+title: Create your first neural network with Javascript
+description: How to create a neural network using Javascript and Brain.js
+date: '2020-08-31'
+cover: /images/create-your-first-neural-network-with-javascript/neural-network-cover.jpg
+---
+<Image
+  alt={`Brain.js logo cover`}
+  src={`/images/create-your-first-neural-network-with-javascript/neural-network-cover.jpg`}
+  width={800}
+  height={475}
+  priority
+/>
+
+> A neural network is a series of algorithms that endeavors to recognize underlying relationships in a set of data through a process that mimics the way the human brain operates. In this sense, neural networks refer to systems of neurons, either organic or artificial in nature.
+
+This is an explanation for what a "neural network" means from [investopedia](https://www.investopedia.com/terms/n/neuralnetwork.asp), so really the neural network is like a mapping of how the human brain learns and we try to apply it to machines with machine learning.
+
+We probably all have heard about doing machine learning or deep learning in python, it's the fancy language of AI, it's a powerful language and it's backed with a huge community of researchers and developers on the subject but as a software developer who uses JavaScript as his main gun I want to show you how we can build a neural network with Brain.js a library that makes ML a walk in the park.
+
+```javascript
+// provide optional config object (or undefined). Defaults shown.
+const config = {
+  binaryThresh: 0.5,
+  hiddenLayers: [3],
+  activation: 'sigmoid' 
+};
+
+const net = new brain.NeuralNetwork(config);
+```
+
+And... This is it !! we created our first neural network in one statement, I don't think it could have been any easier, so what exactly happened now, so as you can see "brain" provides us with a method that allows us to create a neural network with certain configs passed in the arguments.
+
+now creating the neural network is fun and all but in it's current state it's just as **stupid** as it can be, it understands nothing at all just like an infant, and just like a baby it will learn by trying things out, so let's train it shall we
+
+```javascript
+net.train([{
+    input: [0, 0],
+    output: [0]
+  },
+  {
+    input: [0, 1],
+    output: [1]
+  },
+  {
+    input: [1, 0],
+    output: [1]
+  },
+  {
+    input: [1, 1],
+    output: [0]
+  }
+]);
+```
+
+So Brain.js provides us with another method for the neural network "train" this allows us to train our neural network by passing an array of data containing the inputs and outputs of each example, in this case we are training it to understand XOR functions, and that's how the neural network for this example can be represented
+
+<Image
+  alt={`example for neural network representation`}
+  src={`/images/create-your-first-neural-network-with-javascript/neural-network.jpg`}
+  width={811}
+  height={506}
+  priority
+/>
+
+we have an input layer that takes two inputs and those would be the 1s and 0s in our example and they pass to the hidden layer that contains neurons and this is where the magic happens and finally it goes to the output layer.
+
+**So how does it exactly train ?**
+
+Well in the training process a several number of iterations occur that train the neural network with the data we provided, in the first iteration it takes the inputs and produces a result any result it will be completely random at first and and this step is called **"forward propagation"**
+
+the outcome of the first iteration well probably be way off the mark and that's were the error difference gets calculated and well here a little bit of math happens and adjustments to the neurons in the hidden layer that allows it to produce different results in the next iteration and this step is called **"back propagation".**
+
+several iterations happen after that and it only stops when the error threshold is met (you can configure this yourself it's usually something like "0.003") or when 20k iterations occur (this is by default in brain.js but you can configure it as well)
+
+Finally we want to run this to make sure it works
+
+```javascript
+const output = net.run([1, 0]); // [0.987]
+```
+
+as we can see when it gets 1 and 0 inputs it gives 0.987 estimate which is basically saying it's 98.7% sure the result is a "1" which is correct !!
+
+We can finally celebrate and enjoy the fact that we just created our first AI that understands XOR (Just XOR though) !!
+
+<Image
+  alt={`happy and dancing`}
+  src={`/images/create-your-first-neural-network-with-javascript/happy.gif`}
+  width={200}
+  height={153}
+  priority
+/>
+
+##### For additional resources check the main website [here](https://brain.js.org/)
