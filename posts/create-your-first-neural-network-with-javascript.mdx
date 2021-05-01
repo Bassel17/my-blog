@@ -4,6 +4,7 @@ description: How to create a neural network using Javascript and Brain.js
 date: '2020-08-31'
 cover: /images/create-your-first-neural-network-with-javascript/neural-network-cover.jpg
 ---
+
 <Image
   alt={`Brain.js logo cover`}
   src={`/images/create-your-first-neural-network-with-javascript/neural-network-cover.jpg`}
@@ -23,7 +24,7 @@ We probably all have heard about doing machine learning or deep learning in pyth
 const config = {
   binaryThresh: 0.5,
   hiddenLayers: [3],
-  activation: 'sigmoid' 
+  activation: 'sigmoid',
 };
 
 const net = new brain.NeuralNetwork(config);
@@ -34,22 +35,23 @@ And... This is it !! we created our first neural network in one statement, I don
 now creating the neural network is fun and all but in it's current state it's just as **stupid** as it can be, it understands nothing at all just like an infant, and just like a baby it will learn by trying things out, so let's train it shall we
 
 ```javascript
-net.train([{
+net.train([
+  {
     input: [0, 0],
-    output: [0]
+    output: [0],
   },
   {
     input: [0, 1],
-    output: [1]
+    output: [1],
   },
   {
     input: [1, 0],
-    output: [1]
+    output: [1],
   },
   {
     input: [1, 1],
-    output: [0]
-  }
+    output: [0],
+  },
 ]);
 ```
 
