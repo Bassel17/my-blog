@@ -1,0 +1,214 @@
+---
+title: Build a todo app with React-Query
+description: Learn React-Query basics by building a simple Todo app
+date: '2021-05-09'
+image: '/images/fetching-using-react-query/react-query-cover.jpeg'
+---
+
+<Image
+  alt={`React-Query logo cover`}
+  src={`/images/fetching-using-react-query/react-query-cover.jpeg`}
+  width={955}
+  height={500}
+  priority
+/>
+
+## What is React-Query ?
+
+from the **React-Query** <a href="https://react-query.tanstack.com/overview" target="_blank">website</a> we can find this explanation
+
+> React Query is often described as the missing data-fetching library for React,
+> but in more technical terms, it makes fetching, caching, synchronizing and updating
+> server state in your React applications a breeze.
+
+so basically react-query is a library that provides us by default with most of the functionalities that we would need to use
+while fetching data from the server, things like caching, re-fetching automatically and synchronizing the fetched data across the app
+
+I will demonstrate the benefits of this library by building a simple todo application that fetches and updates data on the server,
+I will also provide code examples to showcase the difference between using react-query and not using it!
+
+---
+
+Todo App
+---
+
+First let's start by installing **react-query** in our react app, to do that we'll run
+
+```
+yarn add react-query
+```
+
+or
+
+```
+ npm install react-query
+```
+
+To setup react-query we'll have to wrap our App component with a Query provider just like so:
+
+```jsx
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
+
+const queryClient = new QueryClient();
+
+
+ReactDOM.render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+```
+this will allow us to use the query client in all the child components of the App component which pretty much is our whole app
+
+so let's try fetching our todos, we'll do so in two methods one with react-query and one without react-query
+
+### 1. without react-query
+```jsx
+const [data,setData] = useState([]); //state to hold our fetched data
+
+useEffect(()=>{
+    fetchTodos();
+})
+
+const fetchTodos = async () => {
+   const todos = await getTodos(); //getTodos is an asynchronous function I created that fetches the todos for us and returns a promise
+   setData(todos); // setting the data in the state
+}
+
+return (
+    <div className="App">
+      <header>
+        <h1>Todos</h1>
+      </header>
+      <AddTodo />
+      {data.map((todo) => (
+        <Todo key={todo.id} text={todo.text} isDone={todo.is_done} id={todo.id} /> //component that presents the todos will get into it later
+      ))}
+    </div>
+  );
+
+```
+that's the traditional basic way of doing it, you fetch the data update the state with the fetched data and to do that we use hooks
+such as ***useState*** and ***useEffect***
+
+### 2. with react-query
+
+```jsx
+import { useQuery } from "react-query";
+
+import Todo from "./components/Todo";
+import AddTodo from "./components/AddTodo";
+
+import { getTodos } from "./apis";
+
+function App() {
+  const { isLoading, isError, data, error } = useQuery("todos", getTodos); // a hook provided by react-query, it takes a key(name) and function that returns a promise
+
+  if (isLoading)
+    return (
+      <div className="App">
+        <h1>isLoading...</h1>
+      </div>
+    );
+
+  if (isError)
+    return (
+      <div className="App">
+        <h1>{error}</h1>
+      </div>
+    );
+
+  return (
+    <div className="App">
+      <header>
+        <h1>Todos</h1>
+      </header>
+      <AddTodo />
+      {data.map((todo) => (
+        <Todo key={todo.id} text={todo.text} isDone={todo.is_done} id={todo.id} />
+      ))}
+    </div>
+  );
+}
+
+export default App;
+```
+Here I used the ***useQuery*** hook, it takes a unique key as q first paremeter (you can name it whatever you want)
+and an asynchronous function as the second paremeter in this case it's a function that fetches the todos from the server.
+
+what's interesting here is what ***useQuery*** returns, it returns an object that contains the life cycle of fetching data, it returns a booledan **isLoading**
+which is true incase the the fetching process is still on going, it also gives a an **isError** boolean which is true incase an error occurs, and also it returns
+**data** which contains the data returned from the server and **error** incase an error occurs.
+
+no useState, no useEffect, and most importantly it handles all the cases (loading, error and success), 
+and also it caches the data so it doesn't re-fetch if the data was just recently fetched
+
+---
+
+updating server data is one of the main points where react-query shines, it almost gives the illusion of being realtime,
+so let's see how we can add todos to our list
+
+```jsx
+import { useState } from "react";
+
+import { useMutation, useQueryClient } from "react-query";
+
+import { addTodo } from "../apis";
+
+export default function AddTodo() {
+  const [todo, setTodo] = useState("");
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(addTodo, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      setTodo("")
+      queryClient.invalidateQueries("todos");
+    },
+  });
+
+  return (
+    <div>
+      <input
+        value={todo}
+        onChange={(event) => {
+          setTodo(event.target.value);
+        }}
+        type="text"
+      />
+      <button
+        onClick={() => {
+          mutation.mutate(todo);
+        }}
+      >
+        Add
+      </button>
+    </div>
+  );
+}
+
+```
+
+using the ***useQueryClient*** and ***useMutation*** hooks we can update our data on the server and re-fetch if the update was successful,
+as you can see ***useMutation*** return a mutation object that has a mutate method, the mutate method takes the parameters that ***addTodo*** function needs,
+we can also pass on an ***onSuccess*** method which allows us in this case to tell the query client to re-fetch the todos so the update happens immediately.
+
+---
+
+### Conclusion
+
+React-Query is a great library for fetching data, it gives us the tools necessary so that we can avoid all the repetitive tasks that we would otherwise have to do
+ourselves to achieve the same result.
+
+I only touched breifly as an introduction to react-query but there is a lot more to explore in the library, so I urge you to go check it out and explore all the other functionalities 
+that I didn't explain.
+
+As for the todo app, I have it completed with more functionalities like checking the todo and deleting todos on my github repo, so go check it out as well ===> [laughing-computing-machine](https://github.com/Bassel17/laughing-computing-machine)
+(I know! I like to use weird names for my repos 😉 )
