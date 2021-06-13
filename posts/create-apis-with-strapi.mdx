@@ -1,0 +1,140 @@
+---
+title: Create apis with strapi
+description: Learn how to create apis in a matter of minutes using Strapi !
+date: '2021-06-14'
+image: '/images/create-apis-with-strapi/cover.png'
+---
+
+![alt cover](/images/create-apis-with-strapi/cover.png)
+
+### Strapi is an open source headless CMS that let's you create powerful backends using nodejs
+
+A headless CMS is similar to the famous known CMSs like Wordpress and Drupal except it doesn't have a frontend template.
+It Decouples the frontend from the backend, and exposes restful or graphql APIs.
+
+When I first found Strapi I was astonished by the abilities it gave me and the easy to use interface, it gave me the ability to
+develop a mobile application without having to write backend code.
+
+Strapi is built entirely using nodejs, which makes it perfect for developers who are familiar with JavaScript. 
+It's also open source and can be self-hosted.
+
+I will walk you through how to setup a Strapi project and create a simple e-commerce app with it, I promise you it will be ready in minutes !
+
+---
+
+## How to Get Started with Strapi
+
+### Creating a new project
+
+To create a new blank project we can use the following command in the terminal
+
+```js
+npx create-strapi-app project-name --quickstart
+```
+
+`--quickstart` means that we will use a blank project, but you can use a template instead which will come with
+pre-defined configurations and setup
+
+After the installation is finished we'll move into the project directory
+
+```js
+cd project-name
+```
+and then we'll start the project with the following command
+
+```js
+yarn develop
+```
+The dashboard will open in the browser and the registration page will appear so you can 
+create the Admin account
+
+![alt strapi regsitration page](/images/create-apis-with-strapi/register-admin.png)
+
+After you register you will be greeted with the dashboard, it has a `Users` collection created for us, 
+this allows for authentication using JWT, which is provided by strapi by default, pretty cool right !
+
+![alt strapi home page](/images/create-apis-with-strapi/homepage.png)
+
+---
+
+## Creating a collection
+
+To create a collection we'll use the content types builder, and we will press on the `Create new collection type`
+a modal will popup for us to choose the name of the collection type, I will call it `Products`.
+
+Now we can add the fields we need, we'll need a name for the product, an id, a price and a description, 
+we'll keep it simple.
+
+Those are the different field types we can choose from 
+![alt strapi field types](/images/create-apis-with-strapi/field-types.png)
+
+After we are done with creating the fields we can save and the dashboard will update with the new collection type products, 
+I populated the table with one product.
+
+![alt strapi products table](/images/create-apis-with-strapi/products.png)
+
+---
+
+## Setting up the APIs
+
+After we created the collection types product the rest APIs will also be created for us, Strapi will provide us with the
+GET,POST,PUT,DELETE routes for products as such
+
+```js
+/products //to get all the products or add a product 
+
+/products/:id // to get one product or delete or update
+```
+To be able to use those APIs we'll have to make them public, they are made private by default which is exaclty what we need
+since we only want the find and findone APIs to be public.
+
+To do that we'll have to navigate to 
+
+```js
+settings > USERS & PERMISSIONS PLUGIN > Roles > Public
+```
+And we'll set find and findone as such
+
+![alt strapi permissions](/images/create-apis-with-strapi/permissions.png)
+
+save and then we try to use them and we get the following responses in JSON format
+
+```js
+// find all : localhost:1337/products
+[{
+    "id":1,
+    "name":"T-shirt",
+    "description":"A unique and special T-shirt",
+    "price":70,
+    "published_at":"2021-06-13T16:22:02.560Z",
+    "created_at":"2021-06-13T16:21:58.801Z",
+    "updated_at":"2021-06-13T16:22:02.573Z"
+}]
+
+// find one : localhost:1337/products/1
+{
+    "id":1,
+    "name":"T-shirt",
+    "description":"A unique and special T-shirt",
+    "price":70,
+    "published_at":"2021-06-13T16:22:02.560Z",
+    "created_at":"2021-06-13T16:21:58.801Z",
+    "updated_at":"2021-06-13T16:22:02.573Z"
+}
+
+```
+
+Congrats we have setup a backend with an admin panel for our app now !
+
+---
+
+I have personally used Strapi in a lot of my projects, it's a solid CMS and if you dig deep enough you can build anything with it,
+we can add custom plugins that we create with nodejs and react, also add hooks, integrate authorizations from different platforms (google,facebook...) and integrate different databases.
+
+In this blog post I only scratched the surface of the capabilities that Strapi has, if you want to dig deeper check the official website <a href="https://strapi.io/" target="blank">here</a>
+
+
+
+
+
+
