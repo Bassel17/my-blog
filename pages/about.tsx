@@ -24,7 +24,7 @@ export const About = (): JSX.Element => {
         <br />
         If you want to talk about a project with me or talk about software over
         a cup of coffee, feel free to contact me on this email:{' '}
-        <a href="mailto: basselkanso82@gmail.com">basselkanso82@gmail.com </a>
+        <a href="mailto: contact@basseldev.com">contact@basseldev.com </a>
         or hit me up on any of my social media accounts
       </p>
       <br />
