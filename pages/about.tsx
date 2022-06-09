@@ -11,15 +11,20 @@ export const About = (): JSX.Element => {
       <h1>Hello, I&apos;m Bassel Kanso, a software developer</h1>
       <p>
         {' '}
-        I consider software development to be my craft, as a craftsperson I
-        value my craft and I want to craft the best product I can, I value the
-        way I write my code, I like to share it with other people and to talk
-        about software as well. I hope to be someone who can inspire people into
-        doing what they love and to pursue it passionately whatever it is.
+        I love to experiment with new programming tools and technologies, I want
+        to use this blog to share some of my experiences and hopefully pass on
+        some of the knowledge that I acquired and will acquire.
         <br />
-        As a software developer, I enjoy using my obsessive attention to detail,
-        my unequivocal love for making things, and my mission-driven work ethic
-        to literally change the world.
+        <br />I will also be using youtube as a platform to publish video style
+        content, if you would like to go through this journey discovering all
+        the various parts of software development subscribe to my channel{' '}
+        <a
+          href="https://www.youtube.com/channel/UCfKIZTxxhwiKolfjW4R8DSg"
+          target="_blank"
+          rel="noreferrer"
+        >
+          basseldev
+        </a>
         <br />
         <br />
         If you want to talk about a project with me or talk about software over
