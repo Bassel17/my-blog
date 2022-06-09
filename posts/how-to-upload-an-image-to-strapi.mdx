@@ -17,6 +17,7 @@ form a react app or vue that clearly doesn't work.
 But don't worry I have gone ahead and figured out how to make it work, so I am going to walk you through how to do it !
 
 ---
+
 ## 1- Let's add Axios to our react app
 
 ```bash
@@ -27,11 +28,12 @@ npm install axios --save
 
 To upload files to strapi you'll have to use the **upload** endpoint
 
-If you are running it locally it will look like this 
+If you are running it locally it will look like this
 
 ```bash
 http:localhost:1337/upload
 ```
+
 It will be a **POST** request
 
 ## 2- Add an input
@@ -41,26 +43,22 @@ import { useState } from 'react';
 import axios from 'axios';
 
 function App() {
-
-  const [files,setFiles] = useState()
+  const [files, setFiles] = useState();
 
   const uploadImage = async () => {
-      //posting logic will go here
-  }
+    //posting logic will go here
+  };
 
   return (
-      <form onSubmit={uploadImage}>
-        <input 
-            type="file"
-            onChange={(e)=>setFiles(e.target.files)}
-        />
-        <input type="submit" value="Submit" />
-      </form>
+    <form onSubmit={uploadImage}>
+      <input type="file" onChange={(e) => setFiles(e.target.files)} />
+      <input type="submit" value="Submit" />
+    </form>
   );
 }
 ```
 
-we'll add an input field of type **file**  and capture the event with the **onChange** prop,
+we'll add an input field of type **file** and capture the event with the **onChange** prop,
 we are setting **e.target.files** to the state called files, this basically the information we need
 to upload our file.
 
@@ -70,19 +68,21 @@ We are also adding a function for onSubmit where will create the logic for addin
 
 ```jsx
 const uploadImage = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData()
+  const formData = new FormData();
 
-    formData.append('files', files[0])
+  formData.append('files', files[0]);
 
-    axios.post("http://localhost:1337/upload", formData)
-    .then((response)=>{
-        //after success
-    }).catch((error)=>{
-        //handle error
+  axios
+    .post('http://localhost:1337/upload', formData)
+    .then((response) => {
+      //after success
     })
-}
+    .catch((error) => {
+      //handle error
+    });
+};
 ```
 
 First we prevent the default behaviour of the submit button so our page wouldn't refresh,
@@ -98,27 +98,30 @@ Then pass formData to axios.post second param, and after you press submit an ima
 
 ```jsx
 const uploadImage = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData()
-    
-    formData.append('files', files[0])
+  const formData = new FormData();
 
-    axios.post("http://localhost:1337/upload", formData)
-    .then((response)=>{
+  formData.append('files', files[0]);
 
-      const imageId = response.data[0].id
+  axios
+    .post('http://localhost:1337/upload', formData)
+    .then((response) => {
+      const imageId = response.data[0].id;
 
-      axios.post("http://localhost:1337/people",{image:imageId}).then((response)=>{
-        //handle success
-      }).catch((error)=>{
-          //handle error
+      axios
+        .post('http://localhost:1337/people', { image: imageId })
+        .then((response) => {
+          //handle success
         })
-    }).catch((error)=>{
-        //handle error
+        .catch((error) => {
+          //handle error
+        });
     })
-
-}
+    .catch((error) => {
+      //handle error
+    });
+};
 ```
 
 I created a content type called Person (People because strapi is smart enough to make it plural),
@@ -133,7 +136,3 @@ I hope this was helpful, and please checkout the <a href="https://strapi.io/" ta
 
 Follow me on my social media accounts to recieve more content !
 Thanks for the support !
-
-
-
-

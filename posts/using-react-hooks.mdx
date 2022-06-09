@@ -9,22 +9,23 @@ image: '/images/using-react-hooks/cover.png'
 
 ## What are react hooks ?
 
-Hooks were added to React 16.8, they allow us to use state and 
+Hooks were added to React 16.8, they allow us to use state and
 the other lifecycle methods without writing a class,
 they make it possible to only use functional components.
 
 You might ask, "why use hooks in the first place if they are just replacements to functionalities
-that we already had while using class components !", but that is not the case, Hooks come with lot's of 
+that we already had while using class components !", but that is not the case, Hooks come with lot's of
 improvements over the lifecycle methods used in class components.
 
-React Hooks allow us to address cross-cutting concerns in a much more elegant way than the previous patterns 
-such as <a href="https://reactjs.org/docs/higher-order-components.html" target="_blank">higher-order components</a> 
-and <a href="https://reactjs.org/docs/render-props.html" target="_blank">render props</a>. 
+React Hooks allow us to address cross-cutting concerns in a much more elegant way than the previous patterns
+such as <a href="https://reactjs.org/docs/higher-order-components.html" target="_blank">higher-order components</a>
+and <a href="https://reactjs.org/docs/render-props.html" target="_blank">render props</a>.
 Functionalities such as logging and authentication are not component-specific and React Hooks allow us to attach this type of reusable behavior to components.
 
-In this blog post I will show you how to use the two most important hooks (***useState*** and ***useEffect***) 
+In this blog post I will show you how to use the two most important hooks (**_useState_** and **_useEffect_**)
 that you will need to build your classless react app, I will demonstrate by building a random joke generator using
-this public api 
+this public api
+
 ```json
 api: https://v2.jokeapi.dev/joke/Any
 ```
@@ -33,18 +34,20 @@ api: https://v2.jokeapi.dev/joke/Any
 
 ## useState
 
-This method allows us to use state in our functional components, 
+This method allows us to use state in our functional components,
 it return an array with a state and a method to change that state
 
 ```jsx
-const [state,setState] = useState(); 
+const [state, setState] = useState();
 // state will have the initial state in this case undefined
 // setState is the function that we can use to update the state
 ```
+
 To update the state
+
 ```jsx
-setState("words") 
-// you would use it as such, 
+setState('words');
+// you would use it as such,
 //the parameter takes in the value you want to update the state with
 ```
 
@@ -52,62 +55,66 @@ In our app we'll use the basic setup that comes with **create-react-app**
 and update it as follows
 
 ```jsx
-import {useState} from 'react';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
-    //we created a state joke that is intialized with a string value for now
-    const [joke,setJoke] = useState("There are only 10 kinds of people in this world: those who know binary and those who don't.")
+  //we created a state joke that is intialized with a string value for now
+  const [joke, setJoke] = useState(
+    "There are only 10 kinds of people in this world: those who know binary and those who don't."
+  );
 
-    return (
-        <div className="App">
-        <header className="App-header">
-            <h3>{joke}</h3>
-        </header>
-        </div>
-    );
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h3>{joke}</h3>
+      </header>
+    </div>
+  );
 }
 
 export default App;
 ```
-#### Now our app looks like this !🤘
 
+#### Now our app looks like this !🤘
 
 ![alt cover](/images/using-react-hooks/random-jokes-1.png)
 (I have to say that's a funny joke)
 
---- 
+---
 
 ## useEffect
 
-React Hooks introduces the `useEffect()` method to replace 
-a class component’s lifecycle methods `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount`. 
-The method also allows side effects in your functional component, 
-such as changing content in the document object model and fetching data. 
+React Hooks introduces the `useEffect()` method to replace
+a class component’s lifecycle methods `componentDidMount`, `componentDidUpdate`, and `componentWillUnmount`.
+The method also allows side effects in your functional component,
+such as changing content in the document object model and fetching data.
 `useEffect()` will run after every component render.
 
 From Reacts documentation
->useEffect Accepts a function that contains imperative, possibly effectful code.
+
+> useEffect Accepts a function that contains imperative, possibly effectful code.
 >
->Mutations, subscriptions, timers, logging, and other side effects are not allowed 
->inside the main body of a function component (referred to as React’s render phase). 
->Doing so will lead to confusing bugs and inconsistencies in the UI.
+> Mutations, subscriptions, timers, logging, and other side effects are not allowed
+> inside the main body of a function component (referred to as React’s render phase).
+> Doing so will lead to confusing bugs and inconsistencies in the UI.
 >
->Instead, use useEffect. The function passed to useEffect will run after the render 
->is committed to the screen. Think of effects as an escape hatch from React’s purely 
->functional world into the imperative world.
+> Instead, use useEffect. The function passed to useEffect will run after the render
+> is committed to the screen. Think of effects as an escape hatch from React’s purely
+> functional world into the imperative world.
 >
->By default, effects run after every completed render, 
->but you can choose to fire them only when certain values have changed.
+> By default, effects run after every completed render,
+> but you can choose to fire them only when certain values have changed.
 
 That is a lot to take in !
 
 I'll start by explaining what is effectful code ? !
 
 effectful code is code that affects something outside of the scope of the function
-that is being excuted, also known as ***side effects***
+that is being excuted, also known as **_side effects_**
 
 Side effects can be observed in such events:
+
 - Modifying a global variable
 - Modifying local scope, such as assigning to a variable
 - Modifying memory in-place, such as assigning to an object property or pushing to an array
@@ -117,66 +124,67 @@ Side effects can be observed in such events:
 
 ```jsx
 //Example
-useEffect(()=>{
-    fetchData() // making a network request
-    //eveythig inside this function will be called on every render
-    //fetchData() will be called everytime the component re-renders
-})
+useEffect(() => {
+  fetchData(); // making a network request
+  //eveythig inside this function will be called on every render
+  //fetchData() will be called everytime the component re-renders
+});
 ```
 
-`useEffect` takes a dependencies array as a second parameter, 
+`useEffect` takes a dependencies array as a second parameter,
 this will allow us to make it run only when we want it to.
 
 In our Jokes app we want to use the random jokes api to update the state on every render.
 To do that we'll use the `useEffect()` method and the `setJoke()` method that we got from `useState()`
 
 ```jsx
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [joke, setJoke] = useState('');
 
-    const [joke,setJoke] = useState("")
+  useEffect(() => {
+    getRandomJoke();
+  });
 
-    useEffect(()=>{
-        getRandomJoke();
-    })
-
-    //fetching the data and setting and updating state
-    const getRandomJoke = async () => {
-        const response = await fetch("https://v2.jokeapi.dev/joke/Any?type=single");
-        const result = await response.json();
-        if(!result.error){
-            setJoke(result.joke);
-        }
+  //fetching the data and setting and updating state
+  const getRandomJoke = async () => {
+    const response = await fetch('https://v2.jokeapi.dev/joke/Any?type=single');
+    const result = await response.json();
+    if (!result.error) {
+      setJoke(result.joke);
     }
+  };
 
-    return (
-        <div className="App">
-        <header className="App-header">
-            <h3>{joke}</h3>
-        </header>
-        </div>
-    );
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h3>{joke}</h3>
+      </header>
+    </div>
+  );
 }
 
 export default App;
 ```
+
 ![alt webapp](/images/using-react-hooks/random-jokes-2.gif)
 
 Interesting it looks like the joke is changing ! But it doesn't stop !
 
-The `useEffect()` method is running every single time the `joke` state is changing, this makes it run 
+The `useEffect()` method is running every single time the `joke` state is changing, this makes it run
 in an infinite loop !
 
 To fix that we will use the dependencies array, we want it to run only on the first render
-so we will pass an empty array like such 
+so we will pass an empty array like such
 
 ```jsx
-useEffect(()=>{
-    getRandomJoke();
-},[]) //passed an empty array []
+useEffect(() => {
+  getRandomJoke();
+}, []); //passed an empty array []
 ```
+
 ![alt webapp](/images/using-react-hooks/random-jokes-3.png)
 (Enjoy the joke !)
 
@@ -191,5 +199,3 @@ There are a lot more information to be covered, but I'll keep them for another t
 Check out the offical <a href="https://reactjs.org/docs/hooks-intro.html" target="_blank">documentation</a>
 
 You can find the github repo of for the random joke generator <a href="https://github.com/Bassel17/random-jokes" target="_blank">here</a>
-
-
